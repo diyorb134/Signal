@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sayt</title>
+    <style>
+    body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #3a7bd5, #3a6073);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+}
+
+#login-container, #main-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 300px;
+}
+
+h2, h1 {
+    color: #3a6073;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    font-size: 14px;
+    color: #3a6073;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background: #3a7bd5;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #2a5b9c;
+}
+
+#error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Asosiy qism avval yashirilgan bo'lishi kerak */
+#main-content {
+    display: none;
+}
+
+#random-result {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+    </style>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Login sahifasi -->
+    <div id="login-container">
+        <h2>Kirish</h2>
+        <form onsubmit="return checkLogin(event)">
+            <div class="input-group">
+                <label for="username">Foydalanuvchi nomi</label>
+                <input type="text" id="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Parol</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit">Kirish</button>
+            <p id="error-message"></p>
+        </form>
+    </div>
+
+    <!-- Asosiy sayt qismi -->
+    <div id="main-content">
+        <!-- Signal tugmasi -->
+                <p id="random-result"></p>
+        <button onclick="generateRandomNumber()">Signal</button>
+
+    </div>
+
+    <script>
+    // Doimiy login va parol
+const correctUsername = "ab12";
+const correctPassword = "ab12";
+
+// Sahifani yuklaganda login tekshiriladi
+window.onload = function() {
+    if (localStorage.getItem("loggedIn") === "true") {
+        showMainContent();
+    } else {
+        showLogin();
+    }
+};
+
+// Loginni tekshirish
+function checkLogin(event) {
+    event.preventDefault(); // Sahifa qayta yuklanishining oldini olamiz
+
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+    let errorMessage = document.getElementById("error-message");
+
+    if (username === correctUsername && password === correctPassword) {
+        localStorage.setItem("loggedIn", "true");
+        showMainContent();
+    } else {
+        errorMessage.textContent = "Login yoki parol xato!";
+    }
+}
+
+// Asosiy qismni ko'rsatish
+function showMainContent() {
+    document.getElementById("login-container").style.display = "none";
+    document.getElementById("main-content").style.display = "block";
+}
+
+// Login sahifasini ko'rsatish
+function showLogin() {
+    document.getElementById("login-container").style.display = "block";
+    document.getElementById("main-content").style.display = "none";
+}
+
+// Chiqish funksiyasi
+function logout() {
+    localStorage.removeItem("loggedIn");
+    showLogin();
+}
+
+// Signal tugmasi bosilganda 1-3 oralig'ida random son chiqarish
+function generateRandomNumber() {
+    let randomNum = Math.floor(Math.random() * 3) + 1;
+    document.getElementById("random-result").textContent = "Yutuq " + randomNum + " Savatchada";
+}
+    </script>
+</body>
+</html>
