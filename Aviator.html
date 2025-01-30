@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sayt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #3a7bd5, #3a6073);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        #login-container, #main-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 300px;
+        }
+
+        h2, h1 {
+            color: #3a6073;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            font-size: 14px;
+            color: #3a6073;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 0px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #3a7bd5;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #2a5b9c;
+        }
+
+        button:disabled {
+            background: #a0a0a0;
+            cursor: not-allowed;
+        }
+
+        #error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        #main-content {
+            display: none;
+        }
+
+        #random-result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        #timer-display {
+            font-size: 16px;
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-container">
+        <h2>Kirish</h2>
+        <form onsubmit="return checkLogin(event)">
+            <div class="input-group">
+                <label for="username">Foydalanuvchi nomi</label>
+                <input type="text" id="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Parol</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit">Kirish</button>
+            <p id="error-message"></p>
+        </form>
+    </div>
+
+    <div id="main-content">
+        <p id="random-result"></p>
+        <p id="timer-display"></p>
+        <button id="signal-btn" onclick="generateRandomNumber()">Signal</button>
+    </div>
+
+    <script>
+        const correctUsername = "ab12";
+        const correctPassword = "ab12";
+
+        window.onload = function() {
+            if (localStorage.getItem("loggedIn") === "true") {
+                showMainContent();
+            } else {
+                showLogin();
+            }
+        };
+
+        function checkLogin(event) {
+            event.preventDefault();
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+            let errorMessage = document.getElementById("error-message");
+
+            if (username === correctUsername && password === correctPassword) {
+                localStorage.setItem("loggedIn", "true");
+                showMainContent();
+            } else {
+                errorMessage.textContent = "Login yoki parol xato!";
+            }
+        }
+
+        function showMainContent() {
+            document.getElementById("login-container").style.display = "none";
+            document.getElementById("main-content").style.display = "block";
+        }
+
+        function showLogin() {
+            document.getElementById("login-container").style.display = "block";
+            document.getElementById("main-content").style.display = "none";
+        }
+
+        function logout() {
+            localStorage.removeItem("loggedIn");
+            showLogin();
+        }
+
+        function generateRandomNumber() {
+            let signalButton = document.getElementById("signal-btn");
+            let randomResult = document.getElementById("random-result");
+            let timerDisplay = document.getElementById("timer-display");
+
+            // Tugmani nofaol qilish va matnini o‘zgartirish
+            signalButton.disabled = true;
+            signalButton.textContent = "Keyingi raundni kuting...";
+
+            // Random son yaratish (2 - 10 oralig‘ida)
+            let randomNum = (Math.random() * (11 - 2) + 2).toFixed(2);
+            let result = parseFloat(randomNum).toFixed(2);
+            let timerSeconds = Math.floor(result) * 2.2; // Timerni hisoblash
+
+            randomResult.textContent = "Keyingi natija: " + result;
+            timerDisplay.textContent = "Taymer: " + timerSeconds;
+
+            let countdown = setInterval(function () {
+                timerSeconds--;
+                timerDisplay.textContent = "Taymer: " + timerSeconds;
+
+                if (timerSeconds <= 0) {
+                    clearInterval(countdown);
+                    signalButton.disabled = false;
+                    signalButton.textContent = "Signal";
+                    timerDisplay.textContent = "";
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
