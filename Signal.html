@@ -1,166 +1,645 @@
 <!DOCTYPE html>
 <html lang="uz">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sayt</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+    <title>PIN tekshirish</title>
     <style>
-    body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #3a7bd5, #3a6073);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    flex-direction: column;
-}
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
 
-#login-container, #main-content {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    width: 300px;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
 
-h2, h1 {
-    color: #3a6073;
-}
+        body {
+            text-align: center;
+            //   margin-top: 50px;    
+            background-color: #f4f4f4;
+        }
 
-.input-group {
-    margin-bottom: 15px;
-    text-align: left;
-}
+        .box {
+            display: none;
+            //    width: 250px;
+            margin: 20px auto;
+            padding: 20px;
+            font-size: 24px;
+            border-radius: 10px;
+        }
 
-label {
-    font-size: 14px;
-    color: #3a6073;
-}
+        .doctor {
+            //   background-color: lightblue;
+            color: darkblue;
+        }
 
-input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
+        .nurse {
+            width: 100%;
+        }
 
-button {
-    width: 100%;
-    padding: 10px;
-    background: #3a7bd5;
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-}
+        .error {
+            background-color: pink;
+            color: red;
+        }
 
-button:hover {
-    background: #2a5b9c;
-}
+        #pin-form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            margin: auto;
+            margin-top: 90px;
+        }
 
-#error-message {
-    color: red;
-    font-size: 14px;
-    margin-top: 10px;
-}
+        h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
 
-/* Asosiy qism avval yashirilgan bo'lishi kerak */
-#main-content {
-    display: none;
-}
+        #pin-input {
+            width: 80%;
+            padding: 10px;
+            font-size: 18px;
+            text-align: center;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            transition: 0.3s;
+        }
 
-#random-result {
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 15px;
-}
+        #pin-input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .container {
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            margin: auto;
+            color: black;
+            display: none;
+            margin-top: -50px;
+            z-index: 9999;
+            background: white;
+            position: relative;
+        }
+
+        .options button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            background: #007bff;
+            color: white;
+        }
+
+        .options button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        #timer {
+            font-size: 18px;
+            font-weight: bold;
+            background: rgba(255, 0, 0, 0.2);
+            color: red;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .ball {
+            background: white;
+            box-shadow: 3px 3px 5px lightgray, -3px -3px 5px lightgray;
+            width: 90px;
+            padding: 10px 5px;
+            border-radius: 10px;
+            margin-top: -30px;
+            //   display: flex;    
+            //  justify-content: space-between;    
+        }
+
+        .uil-trophy {
+            color: red;
+        }
+
+        .doctor button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            background: #28a745;
+            /* Yashil rang */
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .doctor button:hover {
+            background: #1e7e34;
+        }
+
+        .doctor-container {
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            margin: auto;
+            color: black;
+            display: none;
+            margin-top: -50px;
+            z-index: 9999;
+            background: white;
+            position: relative;
+        }
+
+        .doctor-options button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            background: #28a745;
+            /* Yashil variant */
+            color: white;
+        }
+
+        .doctor-options button:hover {
+            background-color: #1e7e34;
+            transform: scale(1.05);
+        }
+
+        #doctor-timer {
+            font-size: 18px;
+            font-weight: bold;
+            background: rgba(255, 165, 0, 0.2);
+            /* To‘q sariq fon */
+            color: #d35400;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .doctor-score {
+            background: white;
+            box-shadow: 3px 3px 5px lightgray, -3px -3px 5px lightgray;
+            width: 90px;
+            padding: 10px 5px;
+            border-radius: 10px;
+            margin-top: -50px;
+        }
+
+        .uil-trophy {
+            color: #d35400;
+            /* To‘q sariq rang */
+        }
     </style>
-    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <!-- Login sahifasi -->
-    <div id="login-container">
-        <h2>Kirish</h2>
-        <form onsubmit="return checkLogin(event)">
-            <div class="input-group">
-                <label for="username">Foydalanuvchi nomi</label>
-                <input type="text" id="username" required>
-            </div>
-            <div class="input-group">
-                <label for="password">Parol</label>
-                <input type="password" id="password" required>
-            </div>
-            <button type="submit">Kirish</button>
-            <p id="error-message"></p>
-        </form>
+    <div id="pin-form">
+        <h2>PIN kodni kiriting</h2>
+        <input type="password" id="pin-input" maxlength="">
+        <button onclick="checkPin()">Kirish</button>
     </div>
-
-    <!-- Asosiy sayt qismi -->
-    <div id="main-content">
-        <!-- Signal tugmasi -->
-                <p id="random-result"></p>
-        <button onclick="generateRandomNumber()">Signal</button>
+    <div id="doctor" class="box doctor">
+      <!--  <div class="doctor-score"><i class="uil uil-trophy"></i> <span id="doctor-score-text">ball</span> </div> -->
+        <button onclick="startDoctorTest()">Testni boshlash</button>
+        <div class="doctor-container">
+            <div id="doctor-timer">Qolgan vaqt:&nbsp;<span>&nbsp;25s</span></div>
+            <div class="doctor-question" id="doctor-question">Savol yuklanmoqda...</div>
+            <div class="doctor-options" id="doctor-options"></div>
+        </div>
+    </div>
+    <div id="nurse" class="box nurse">
+    <!--    <div class="ball"><i class="uil uil-trophy"></i> <span id="score-text">ball</span> </div>-->
+        <button onclick="startTest()">Testni boshlash</button>
+        <div class="container">
+            <div id="timer">Qolgan vaqt:&nbsp;<span>&nbsp;25s</span></div>
+            <div class="question" id="question">Savol yuklanmoqda...</div>
+            <div class="options" id="options"></div>
+        </div>
 
     </div>
-
+    </div>
+    <div id="error" class="box error">Xato PIN kod</div>
     <script>
-    // Doimiy login va parol
-const correctUsername = "ab12";
-const correctPassword = "ab12";
+        const doctorPins = ["5417", "5264", "5807", "1759", "1358", "9199", "1838", "2199", "0298", "3497",
+            "0285", "1286", "3976", "3222", "9259", "2932", "0391", "9463", "1307", "7277"
+        ];
 
-// Sahifani yuklaganda login tekshiriladi
-window.onload = function() {
-    if (localStorage.getItem("loggedIn") === "true") {
-        showMainContent();
-    } else {
-        showLogin();
-    }
-};
+        const nursePins = ["gMa09", "2480", "9107", "4485", "8257", "5361", "6389", "5030", "3959", "9947",
+            "3106", "8561", "8140", "2973", "1394", "6934", "9280", "4161", "4294", "4273"
+        ];
 
-// Loginni tekshirish
-function checkLogin(event) {
-    event.preventDefault(); // Sahifa qayta yuklanishining oldini olamiz
+        function showDiv(pin) {
+            document.getElementById("pin-form").style.display = "none"; // PIN formani yashirish
+            document.getElementById("doctor").style.display = "none";
+            document.getElementById("nurse").style.display = "none";
+            document.getElementById("error").style.display = "none";
 
-    let username = document.getElementById("username").value;
-    let password = document.getElementById("password").value;
-    let errorMessage = document.getElementById("error-message");
+            if (doctorPins.includes(pin)) {
+                document.getElementById("doctor").style.display = "block";
+            } else if (nursePins.includes(pin)) {
+                document.getElementById("nurse").style.display = "block";
+            } else {
+                document.getElementById("error").style.display = "block";
+                document.getElementById("pin-form").style.display = "block"; // Xato bo‘lsa formani qayta chiqarish
+            }
+        }
 
-    if (username === correctUsername && password === correctPassword) {
-        localStorage.setItem("loggedIn", "true");
-        showMainContent();
-    } else {
-        errorMessage.textContent = "Login yoki parol xato!";
-    }
-}
+        function checkPin() {
+            let pin = document.getElementById("pin-input").value;
+            if (pin) {
+                localStorage.setItem("userPin", pin);
+                showDiv(pin);
+            }
+        }
 
-// Asosiy qismni ko'rsatish
-function showMainContent() {
-    document.getElementById("login-container").style.display = "none";
-    document.getElementById("main-content").style.display = "block";
-}
+        let savedPin = localStorage.getItem("userPin");
+        if (savedPin) {
+            showDiv(savedPin);
+        }
 
-// Login sahifasini ko'rsatish
-function showLogin() {
-    document.getElementById("login-container").style.display = "block";
-    document.getElementById("main-content").style.display = "none";
-}
+        const questions = [{
+                question: "Этиология – бу:",
+                options: [
+                    "Касаллик намоён бўлиши ва белгилари.",
+                    "Касаллик пайдо бўлиш сабаблари.",
+                    "Касаллик оқибати.",
+                    "Касалликни олдини олиш."
+                ],
+                answer: 1
+            },
+            {
+                question: "Гипогалактия-бу?",
+                options: [
+                    "Потологик ҳолат бўлиб, она сутини кам ажралиши;",
+                    "Физиологик ҳолат бўлиб, она сутини кам ажралиши;",
+                    "Физиологик ҳолат бўлиб, она сутини кўп ажралиши;",
+                    "Кўкрак сутига сезувчанликни ошиши;"
+                ],
+                answer: 1
+            },
+            {
+                question: "Симптомлар йиғиндиси:",
+                options: [
+                    "Этиология",
+                    "Синдром",
+                    "Диагноз",
+                    "Патогенез"
+                ],
+                answer: 1
+            },
+            {
+                question: "Катта ёшли одамда нафас сони нормада 1 минутда:",
+                options: [
+                    "10-12",
+                    "16-20",
+                    "22-28",
+                    "25-30"
+                ],
+                answer: 1
+            },
+            {
+                question: "Ҳамширалик ишига асос солган инсон?",
+                options: [
+                    "Абу Али Ибн Сино",
+                    "Ф.Найтингеул",
+                    "Н.И Арипов",
+                    "Буқрот"
+                ],
+                answer: 1
+            },
+            {
+                question: "Халқаро ҳамширалик куни қачон нишонланади?",
+                options: [
+                    "9 май",
+                    "12 май",
+                    "25 ноябр",
+                    "Ноябр ойининг иккинчи якшанбаси."
+                ],
+                answer: 1
+            },
+            {
+                question: "Халқаро ҳамширалар куни нечанчи йилдан бошлаб нишонланади?",
+                options: [
+                    "1990",
+                    "1971",
+                    "1890",
+                    "1820"
+                ],
+                answer: 1
+            },
+            {
+                question: "Халқаро ҳамширалик ассосациясига қачон асос солинган?",
+                options: [
+                    "1820",
+                    "1899",
+                    "1971",
+                    "1844"
+                ],
+                answer: 1
+            },
+            {
+                question: "Стерилизатсиядан олдин тиббий асбобларни тозалашда ювиш учун қандай сувдан фойдаланилади?",
+                options: [
+                    "Оқава",
+                    "Дистилланган",
+                    "Қайнатилган",
+                    "Стерил"
+                ],
+                answer: 1
+            },
+            {
+                question: "А шкафда қандай дори моддалари сақланади?",
+                options: [
+                    "Кучли таъсир қиладиган (кодеин, адреналин), уҳлатадиган.",
+                    "Стерил дори моддалар",
+                    "Заҳарли моддалар (наркотиклар, стрихин, мишяк)",
+                    "Тез тиббий ёрдам учун мўлжалланган дори моддалари"
+                ],
+                answer: 2
+            },
+            {
+                question: "Б шкафда қандай дори моддалари сақланади?",
+                options: [
+                    "Заҳарли моддалар (наркотиклар, стрихин, мишяк)",
+                    "Кучли таъсир қиладиган (кодеин, адреналин), уҳлатадиган",
+                    "Стерил дори моддалар",
+                    "Тез тиббий ёрдам учун мўлжалланган дори моддалари"
+                ],
+                answer: 1
+            },
+            {
+                question: "Тери орасига қилинадиган Манту синамаси нима мақсадда қилинади?",
+                options: [
+                    "Ехинококкозни аниқлаш мақсадида",
+                    "Яширин шишни аниқлаш мақсадида",
+                    "Силни аниқлаш мақсадида",
+                    "Бруселлёзни аниқлаш мақсадида"
+                ],
+                answer: 2
+            },
+            {
+                question: "Манту синамасига қанча вақтдан сўнг баҳо берилади?",
+                options: [
+                    "Бир ҳафта муобайнида",
+                    "24 соатдан- 48 соатгача",
+                    "2 соат ичида",
+                    "12 соат ичида"
+                ],
+                answer: 1
+            },
+            {
+                question: "Анафилактик шок бу?",
+                options: [
+                    "Дори моддасини инъексия қилинган соҳада қотиб қолиши",
+                    "Организмда дори моддаларини ножўя таъсири натижасида юзага келадиган аллергик реаксия",
+                    "Инфилтрат ҳосил бўлиши",
+                    "Инъексия қилинган соҳага инфексия тушиб, абсесс келиб чиқиши"
+                ],
+                answer: 1
+            },
+            {
+                question: "Эмболия бу?",
+                options: [
+                    "Қон томирларга қонда оқиб келувчи ёт модда бўлакчаларининг (ҳаво) тиқилиб қолиши",
+                    "Қон томирларни букланиб қолиши",
+                    "Қон томир деворини бутунлигини бузилиши.",
+                    "Қоннинг суюлиб кетиши"
+                ],
+                answer: 0
+            }
+        ];
 
-// Chiqish funksiyasi
-function logout() {
-    localStorage.removeItem("loggedIn");
-    showLogin();
-}
 
-// Signal tugmasi bosilganda 1-3 oralig'ida random son chiqarish
-function generateRandomNumber() {
-    let randomNum = Math.floor(Math.random() * 3) + 1;
-    document.getElementById("random-result").textContent = "Yutuq " + randomNum + " Savatchada";
-}
+
+
+
+        let currentQuestion = 0;
+        let score = localStorage.getItem("testScore") ? parseInt(localStorage.getItem("testScore")) : 3;
+        let sessionScore = 0; // Har testda yangilanadi    
+        let timeLeft = 25;
+        let timer;
+
+        // Ball divini topamiz    
+        let ballDiv = document.querySelector(".ball span");
+
+        // Saqlangan natijani ko‘rsatamiz    
+        ballDiv.innerText = score;
+
+        function shuffleQuestions() {
+            for (let i = questions.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                [questions[i], questions[j]] = [questions[j], questions[i]];
+            }
+        }
+
+        function startTest() {
+            sessionScore = 0;
+            currentQuestion = 0;
+            shuffleQuestions(); // Har test boshlanganda aralashtiramiz
+            document.querySelector(".container").style.display = "block";
+            document.querySelector("#timer").style.display = "flex";
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= questions.length) {
+                score += sessionScore; // Umumiy ballga joriy test natijasini qo‘shamiz    
+                localStorage.setItem("testScore", score);
+                document.querySelector(".container").innerHTML = `<h2>Test yakunlandi!</h2>    
+            <p>Joriy test natijangiz: ${sessionScore}/${questions.length}</p>    
+            <button onclick="restartTest()">Qayta boshlash</button>`;
+                ballDiv.innerText = score; // Umumiy ballni yangilash    
+                return;
+            }
+
+            document.getElementById("question").innerText = questions[currentQuestion].question;
+            document.getElementById("options").innerHTML = "";
+
+            questions[currentQuestion].options.forEach((option, index) => {
+                let button = document.createElement("button");
+                button.innerText = option;
+                button.onclick = function() {
+                    checkAnswer(index);
+                };
+                document.getElementById("options").appendChild(button);
+            });
+
+            timeLeft = 25;
+            document.querySelector("#timer span").innerText = `${timeLeft}s`;
+
+            clearInterval(timer);
+            timer = setInterval(() => {
+                timeLeft--;
+                document.querySelector("#timer span").innerText = `${timeLeft}s`;
+                if (timeLeft === 0) {
+                    clearInterval(timer);
+                    nextQuestion();
+                }
+            }, 1000);
+        }
+
+        function checkAnswer(index) {
+            clearInterval(timer);
+            if (index === questions[currentQuestion].answer) {
+                sessionScore++; // Joriy test natijasini oshiramiz    
+            }
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function restartTest() {
+            document.querySelector(".container").innerHTML = `    
+        <div id="timer">Qolgan vaqt:&nbsp;<span>&nbsp;25s</span></div>    
+        <div class="question" id="question">Savol yuklanmoqda...</div>    
+        <div class="options" id="options"></div>    
+    `;
+            startTest();
+        }
+
+        const doctorQuestions = [{
+                question: "Гипоксия – бу?",
+                options: [
+                    "Тана тўқималарига кислород етишмовчилиги;",
+                    "Қондаги глюкоза миқдорининг камайиши;",
+                    "Юрак уришининг секинлашиши;",
+                    "Қон босимининг ошиши."
+                ],
+                answer: 0
+            },
+            {
+                question: "Тахикардия – бу?",
+                options: [
+                    "Юрак уришининг секинлашиши;",
+                    "Юрак уришининг тезлашиши;",
+                    "Қон босимининг пасайиши;",
+                    "Тана ҳароратининг ошиши."
+                ],
+                answer: 1
+            }
+        ];
+
+        let doctorCurrentQuestion = 0;
+        let doctorScore = localStorage.getItem("doctorTestScore") ? parseInt(localStorage.getItem("doctorTestScore")) : 0;
+        let doctorSessionScore = 0;
+        let doctorTimeLeft = 25;
+        let doctorTimer;
+
+        // Ball divini topamiz    
+        let doctorBallDiv = document.querySelector(".doctor-score span");
+
+        // Saqlangan natijani ko‘rsatamiz    
+        doctorBallDiv.innerText = doctorScore;
+
+        function startDoctorTest() {
+            doctorSessionScore = 0;
+            doctorCurrentQuestion = 0;
+            document.querySelector(".doctor-container").style.display = "block";
+            document.querySelector("#doctor-timer").style.display = "flex";
+            loadDoctorQuestion();
+        }
+
+        function loadDoctorQuestion() {
+            if (doctorCurrentQuestion >= doctorQuestions.length) {
+                doctorScore += doctorSessionScore;
+                localStorage.setItem("doctorTestScore", doctorScore);
+                document.querySelector(".doctor-container").innerHTML = `<h2>Test yakunlandi!</h2>    
+        <p>Joriy test natijangiz: ${doctorSessionScore}/${doctorQuestions.length}</p>    
+        <button onclick="restartDoctorTest()">Qayta boshlash</button>`;
+                doctorBallDiv.innerText = doctorScore;
+                return;
+            }
+
+            document.getElementById("doctor-question").innerText = doctorQuestions[doctorCurrentQuestion].question;
+            document.getElementById("doctor-options").innerHTML = "";
+
+            doctorQuestions[doctorCurrentQuestion].options.forEach((option, index) => {
+                let button = document.createElement("button");
+                button.innerText = option;
+                button.onclick = function() {
+                    checkDoctorAnswer(index);
+                };
+                document.getElementById("doctor-options").appendChild(button);
+            });
+
+            doctorTimeLeft = 25;
+            document.querySelector("#doctor-timer span").innerText = `${doctorTimeLeft}s`;
+
+            clearInterval(doctorTimer);
+            doctorTimer = setInterval(() => {
+                doctorTimeLeft--;
+                document.querySelector("#doctor-timer span").innerText = `${doctorTimeLeft}s`;
+                if (doctorTimeLeft === 0) {
+                    clearInterval(doctorTimer);
+                    nextDoctorQuestion();
+                }
+            }, 1000);
+        }
+
+        function checkDoctorAnswer(index) {
+            clearInterval(doctorTimer);
+            if (index === doctorQuestions[doctorCurrentQuestion].answer) {
+                doctorSessionScore++;
+            }
+            nextDoctorQuestion();
+        }
+
+        function nextDoctorQuestion() {
+            doctorCurrentQuestion++;
+            loadDoctorQuestion();
+        }
+
+        function restartDoctorTest() {
+            document.querySelector(".doctor-container").innerHTML = `    
+    <div id="doctor-timer">Qolgan vaqt:&nbsp;<span>&nbsp;25s</span></div>    
+    <div class="doctor-question" id="doctor-question">Savol yuklanmoqda...</div>    
+    <div class="doctor-options" id="doctor-options"></div>    
+    `;
+            startDoctorTest();
+        }
     </script>
 </body>
+
 </html>
